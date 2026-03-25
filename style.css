@@ -1,0 +1,167 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #d9d9d9;
+}
+
+/* HEADER */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #b22222;
+    padding: 15px 30px;
+}
+
+.logo img {
+    height: 60px;
+}
+
+.menu {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+/* MAIN */
+main {
+    padding: 60px;
+}
+
+/* GRID DOS CARDS */
+.cards-top {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 60px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* CARD */
+.card {
+    background-color: #b22222;
+    color: black;
+    padding: 30px;
+    border-radius: 20px;
+    min-height: 320px;
+    text-align: center;
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.25);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card h2 {
+    margin-top: 0;
+}
+
+/* LISTAS */
+.card ol {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-left: 20px;
+}
+
+/* PERFIL */
+.perfil .avatar {
+    font-size: 80px;
+    background-color: white;
+    border-radius: 50%;
+    width: 130px;
+    height: 130px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nome {
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.cargo {
+    font-size: 14px;
+}
+
+/* BOTÕES */
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 200px;
+    margin-top: 60px;
+}
+
+button {
+    background-color: #b22222;
+    border: none;
+    padding: 25px 60px;
+    border-radius: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+}
+
+button:hover {
+    opacity: 0.8;
+}
+/* FORMULÁRIO */
+
+.form-container {
+    max-width: 900px;
+    margin: auto;
+}
+
+.form-container h2 {
+    background-color: #b22222;
+    padding: 15px;
+    border-radius: 10px;
+    color: black;
+}
+
+/* GRUPO */
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+/* LABEL */
+.form-group label {
+    background-color: #b22222;
+    padding: 15px 20px;
+    border-radius: 10px;
+    min-width: 150px;
+    text-align: center;
+}
+
+/* INPUT */
+.form-group input {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* BOTÃO */
+.form-actions {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.form-actions button {
+    background-color: #b22222;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.form-actions button:hover {
+    opacity: 0.8;
+}
