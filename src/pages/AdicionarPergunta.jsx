@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 
 function AdicionarPergunta() {
   const navigate = useNavigate();
-  const { modo } = useParams();
+  const { modo, id } = useParams();
 
+  const estaEditando = Boolean(id);
   const modoInicial = modo === "2" ? "2" : "1";
 
   const [modoJogo, setModoJogo] = useState(modoInicial);
@@ -24,6 +25,44 @@ function AdicionarPergunta() {
 
   const [alternativaCorreta, setAlternativaCorreta] = useState("A");
 
+  useEffect(() => {
+    if (!estaEditando) return;
+
+    const perguntasSalvas =
+      JSON.parse(localStorage.getItem("perguntasSistema")) || [];
+
+    const perguntaEncontrada = perguntasSalvas.find(
+      (pergunta) => String(pergunta.id) === String(id)
+    );
+
+    if (!perguntaEncontrada) {
+      alert("Pergunta não encontrada.");
+      navigate("/professor");
+      return;
+    }
+
+    setModoJogo(String(perguntaEncontrada.modo));
+    setTipoPergunta(perguntaEncontrada.tipoPergunta || "multipla_escolha");
+    setPontuacao(perguntaEncontrada.pontuacao || 10);
+    setEnunciado(perguntaEncontrada.enunciado || "");
+    setDica(perguntaEncontrada.dica || "");
+    setImagemBase64(perguntaEncontrada.imagem || "");
+
+    const alternativasConvertidas = {
+      A: "",
+      B: "",
+      C: "",
+      D: "",
+    };
+
+    perguntaEncontrada.alternativas?.forEach((alternativa) => {
+      alternativasConvertidas[alternativa.letra] = alternativa.texto;
+    });
+
+    setAlternativas(alternativasConvertidas);
+    setAlternativaCorreta(perguntaEncontrada.alternativaCorreta || "A");
+  }, [estaEditando, id, navigate]);
+
   function atualizarAlternativa(letra, valor) {
     setAlternativas((estadoAtual) => ({
       ...estadoAtual,
@@ -34,10 +73,7 @@ function AdicionarPergunta() {
   function carregarImagem(event) {
     const arquivo = event.target.files[0];
 
-    if (!arquivo) {
-      setImagemBase64("");
-      return;
-    }
+    if (!arquivo) return;
 
     const leitor = new FileReader();
 
@@ -48,14 +84,47 @@ function AdicionarPergunta() {
     leitor.readAsDataURL(arquivo);
   }
 
+  function gerarProximoId(perguntasSalvas) {
+    const idsValidos = perguntasSalvas
+      .map((pergunta) => Number(pergunta.id))
+      .filter((idPergunta) => idPergunta >= 6 && idPergunta < 1000);
+
+    if (idsValidos.length === 0) {
+      return 6;
+    }
+
+    return Math.max(...idsValidos) + 1;
+  }
+
   function salvarPergunta(event) {
     event.preventDefault();
+
+    if (!enunciado.trim()) {
+      alert("O enunciado da pergunta é obrigatório.");
+      return;
+    }
+
+    if (!alternativas.A.trim() || !alternativas.B.trim() || !alternativas.C.trim() || !alternativas.D.trim()) {
+      alert("Todas as alternativas precisam ser preenchidas.");
+      return;
+    }
+
+    if (!alternativas[alternativaCorreta].trim()) {
+      alert("A alternativa correta não pode estar vazia.");
+      return;
+    }
 
     const perguntasSalvas =
       JSON.parse(localStorage.getItem("perguntasSistema")) || [];
 
-    const novaPergunta = {
-      id: Date.now(),
+    const perguntaAntiga = perguntasSalvas.find(
+      (pergunta) => String(pergunta.id) === String(id)
+    );
+
+    const proximoId = gerarProximoId(perguntasSalvas);
+
+    const perguntaAtualizada = {
+      id: estaEditando ? Number(id) : proximoId,
       modo: modoJogo,
       modoTexto: modoJogo === "2" ? "Modo 2 - Médio" : "Modo 1 - Fácil",
       tipoPergunta,
@@ -88,15 +157,31 @@ function AdicionarPergunta() {
         },
       ],
       status: "Ativa",
-      dataCriacao: new Date().toLocaleString("pt-BR"),
+      origem: "Professor",
+      dataCriacao: estaEditando
+        ? perguntaAntiga?.dataCriacao || new Date().toLocaleString("pt-BR")
+        : new Date().toLocaleString("pt-BR"),
+      dataAtualizacao: estaEditando ? new Date().toLocaleString("pt-BR") : null,
     };
 
-    localStorage.setItem(
-      "perguntasSistema",
-      JSON.stringify([...perguntasSalvas, novaPergunta])
+    let novaLista;
+
+    if (estaEditando) {
+      novaLista = perguntasSalvas.map((pergunta) =>
+        String(pergunta.id) === String(id) ? perguntaAtualizada : pergunta
+      );
+    } else {
+      novaLista = [...perguntasSalvas, perguntaAtualizada];
+    }
+
+    localStorage.setItem("perguntasSistema", JSON.stringify(novaLista));
+
+    alert(
+      estaEditando
+        ? "Pergunta atualizada com sucesso!"
+        : "Pergunta cadastrada com sucesso!"
     );
 
-    alert("Pergunta cadastrada com sucesso!");
     navigate(`/perguntas/${modoJogo}`);
   }
 
@@ -109,13 +194,15 @@ function AdicionarPergunta() {
           <div className="page-title-row">
             <div>
               <p className="page-subtitle">Gerenciamento de perguntas</p>
-              <h1>Adicionar Nova Pergunta</h1>
+              <h1>
+                {estaEditando ? "Editar Pergunta" : "Adicionar Nova Pergunta"}
+              </h1>
             </div>
 
             <button
               type="button"
               className="back-button"
-              onClick={() => navigate(`/perguntas/${modoInicial}`)}
+              onClick={() => navigate(`/perguntas/${modoJogo}`)}
             >
               Voltar
             </button>
@@ -168,6 +255,13 @@ function AdicionarPergunta() {
                   <input type="file" accept="image/*" onChange={carregarImagem} />
                 </div>
               </div>
+
+              {imagemBase64 && (
+                <div className="question-image-preview">
+                  <p>Imagem atual:</p>
+                  <img src={imagemBase64} alt="Pré-visualização da pergunta" />
+                </div>
+              )}
 
               <div className="form-field full-width">
                 <label>Enunciado</label>
@@ -273,12 +367,14 @@ function AdicionarPergunta() {
             </section>
 
             <div className="form-actions">
-              <button type="submit">SALVAR PERGUNTA</button>
+              <button type="submit">
+                {estaEditando ? "SALVAR ALTERAÇÕES" : "SALVAR PERGUNTA"}
+              </button>
 
               <button
                 type="button"
                 className="secondary-button"
-                onClick={() => navigate(`/perguntas/${modoInicial}`)}
+                onClick={() => navigate(`/perguntas/${modoJogo}`)}
               >
                 CANCELAR
               </button>

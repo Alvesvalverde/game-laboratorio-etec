@@ -34,6 +34,7 @@ function AnimatedRoutes() {
         <Route path="/adicionar-pergunta" element={<AdicionarPergunta />} />
         <Route path="/adicionar-pergunta/:modo" element={<AdicionarPergunta />} />
         <Route path="/alunos/:id/desempenho" element={<DesempenhoAluno />} />
+        <Route path="/editar-pergunta/:id" element={<AdicionarPergunta />} />
       </Routes>
     </div>
   );

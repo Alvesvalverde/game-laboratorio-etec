@@ -2064,3 +2064,30 @@ body {
     font-size: 26px;
   }
 }
+/* ============================= */
+/* PREVIEW DE IMAGEM DA PERGUNTA */
+/* ============================= */
+
+.question-image-preview {
+  margin-top: 22px;
+  background-color: #f8f8f8;
+  border-radius: 14px;
+  padding: 18px;
+  border-left: 6px solid #b22222;
+}
+
+.question-image-preview p {
+  margin: 0 0 12px;
+  font-weight: bold;
+  color: #333;
+}
+
+.question-image-preview img {
+  max-width: 180px;
+  max-height: 140px;
+  object-fit: contain;
+  display: block;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 10px;
+}

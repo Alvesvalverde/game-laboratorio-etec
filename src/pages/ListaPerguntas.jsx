@@ -86,7 +86,14 @@ function ListaPerguntas() {
 
     window.location.reload();
   }
+    function editarPergunta(idPergunta, origem) {
+      if (origem === "Padrão") {
+      alert("As perguntas padrão não podem ser editadas nesta versão de teste.");
+      return;
+  }
 
+  navigate(`/editar-pergunta/${idPergunta}`);
+}
   return (
     <>
       <Header />
@@ -159,7 +166,12 @@ function ListaPerguntas() {
                       <span className="status-badge">{pergunta.status}</span>
                     </td>
                     <td>
-                      <button className="table-action-button">Editar</button>
+                      <button
+                        className="table-action-button"
+                        onClick={() => editarPergunta(pergunta.id, pergunta.origem)}
+                      >
+                        Editar
+                      </button>
 
                       <button
                         className="table-action-button danger"
