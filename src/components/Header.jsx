@@ -43,7 +43,7 @@ function Header() {
           type="button"
           className="menu-button"
           aria-label="Abrir menu"
-          onClick={() => setMenuAberto(!menuAberto)}
+          onClick={() => setMenuAberto((valorAtual) => !valorAtual)}
         >
           ☰
         </button>

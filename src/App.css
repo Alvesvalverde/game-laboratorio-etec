@@ -26,15 +26,20 @@ body {
   background-color: #ffffff;
   height: 90px;
   width: 175px;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
-  overflow: hidden;
-  padding: 6px;
-
   cursor: pointer;
+  border: none;
+  padding: 0;
+}
+
+.logo-area:hover {
+  opacity: 0.95;
+}
+
+.logo {
+  max-width: 145px;
 }
 
 .logo {
@@ -2090,4 +2095,67 @@ body {
   background-color: #ffffff;
   border-radius: 10px;
   padding: 10px;
+}
+/* ============================= */
+/* TELA 404 */
+/* ============================= */
+
+.not-found-page {
+  min-height: 100vh;
+  background-color: #d9d9d9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.not-found-card {
+  width: 100%;
+  max-width: 560px;
+  background-color: #ffffff;
+  border-radius: 24px;
+  padding: 42px;
+  text-align: center;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+  border-top: 10px solid #b22222;
+}
+
+.not-found-logo img {
+  width: 190px;
+  margin-bottom: 25px;
+}
+
+.not-found-code {
+  display: block;
+  font-size: 72px;
+  font-weight: 800;
+  color: #b22222;
+  line-height: 1;
+  margin-bottom: 14px;
+}
+
+.not-found-card h1 {
+  margin: 0 0 14px;
+  font-size: 30px;
+  color: #1f1f1f;
+}
+
+.not-found-card p {
+  margin: 0 auto 28px;
+  max-width: 420px;
+  color: #555;
+  line-height: 1.5;
+}
+/* ============================= */
+/* ACESSO RESTRITO NO RANKING */
+/* ============================= */
+
+.restricted-label {
+  display: inline-block;
+  background-color: #eeeeee;
+  color: #777777;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 13px;
 }

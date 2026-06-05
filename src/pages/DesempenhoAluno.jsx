@@ -4,7 +4,10 @@ import Header from "../components/Header";
 function DesempenhoAluno() {
   const navigate = useNavigate();
   const { id } = useParams();
+const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
 
+const acessoNegado =
+  usuarioLogado?.tipo === "aluno" && String(usuarioLogado.id) !== String(id);
   const alunosPadrao = [
     {
       id: 1,
@@ -86,7 +89,32 @@ function DesempenhoAluno() {
 
   const percentual =
     totalPerguntas > 0 ? Math.round((totalAcertos / totalPerguntas) * 100) : 0;
+if (acessoNegado) {
+  return (
+    <>
+      <Header />
 
+      <main className="desempenho-page">
+        <section className="desempenho-container">
+          <div className="empty-performance">
+            <h2>Acesso restrito</h2>
+            <p>
+              Você não tem permissão para visualizar o desempenho de outro
+              aluno.
+            </p>
+
+            <button
+              className="primary-action-button"
+              onClick={() => navigate("/ranking")}
+            >
+              Voltar para o ranking
+            </button>
+          </div>
+        </section>
+      </main>
+    </>
+  );
+}
   if (!aluno) {
     return (
       <>

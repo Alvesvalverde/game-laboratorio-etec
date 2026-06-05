@@ -5,7 +5,7 @@ import Header from "../components/Header";
 function JogoModo2() {
   const navigate = useNavigate();
 
-  const desafios = [
+  const desafiosPadrao = [
     {
       id: 1,
       enunciado: "Qual material está associado ao processo de filtração simples?",
@@ -13,6 +13,7 @@ function JogoModo2() {
       imagem: "/icons.svg",
       respostaCorreta: "Funil",
       dica: "Esse material é usado junto com papel filtro.",
+      pontuacao: 15,
       alternativas: [
         "Funil",
         "Bico de Bunsen",
@@ -32,6 +33,7 @@ function JogoModo2() {
       imagem: "/icons.svg",
       respostaCorreta: "Condensador",
       dica: "Esse material resfria o vapor e transforma em líquido novamente.",
+      pontuacao: 15,
       alternativas: [
         "Proveta",
         "Funil",
@@ -51,6 +53,7 @@ function JogoModo2() {
       imagem: "/icons.svg",
       respostaCorreta: "Cápsula",
       dica: "Normalmente é feita de porcelana.",
+      pontuacao: 15,
       alternativas: [
         "Béquer",
         "Proveta",
@@ -64,6 +67,26 @@ function JogoModo2() {
       ],
     },
   ];
+
+  const perguntasCadastradas =
+    JSON.parse(localStorage.getItem("perguntasSistema")) || [];
+
+  const desafiosDoProfessor = perguntasCadastradas
+    .filter((pergunta) => String(pergunta.modo) === "2")
+    .map((pergunta) => ({
+      id: pergunta.id,
+      enunciado: pergunta.enunciado,
+      contexto: pergunta.tipoPergunta === "associacao"
+        ? "Pergunta de associação"
+        : "Sistema experimental",
+      imagem: pergunta.imagem || "/icons.svg",
+      respostaCorreta: pergunta.respostaCorreta,
+      dica: pergunta.dica || "Sem dica cadastrada.",
+      pontuacao: pergunta.pontuacao || 15,
+      alternativas: pergunta.alternativas.map((alternativa) => alternativa.texto),
+    }));
+
+  const desafios = [...desafiosPadrao, ...desafiosDoProfessor];
 
   const [indiceAtual, setIndiceAtual] = useState(0);
   const [pontuacao, setPontuacao] = useState(0);
@@ -81,7 +104,7 @@ function JogoModo2() {
     const acertou = alternativa === desafioAtual.respostaCorreta;
 
     if (acertou) {
-      setPontuacao((valor) => valor + 15);
+      setPontuacao((valor) => valor + desafioAtual.pontuacao);
       setAcertos((valor) => valor + 1);
       setMensagem("Resposta correta! ✅");
     } else {
@@ -129,6 +152,30 @@ function JogoModo2() {
     } else {
       salvarDesempenhoENavegar();
     }
+  }
+
+  if (desafios.length === 0) {
+    return (
+      <>
+        <Header />
+
+        <main className="jogo2-page">
+          <section className="jogo2-container">
+            <div className="empty-performance">
+              <h2>Nenhuma pergunta disponível</h2>
+              <p>Peça ao professor para cadastrar perguntas neste modo.</p>
+
+              <button
+                className="primary-action-button"
+                onClick={() => navigate("/aluno")}
+              >
+                Voltar ao menu
+              </button>
+            </div>
+          </section>
+        </main>
+      </>
+    );
   }
 
   return (

@@ -3,7 +3,7 @@ import Header from "../components/Header";
 
 function Ranking() {
   const navigate = useNavigate();
-
+const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
   const alunosPadrao = [
     {
       id: 1,
@@ -183,12 +183,29 @@ function Ranking() {
                     <td>{aluno.acertos}</td>
                     <td>{aluno.erros}</td>
                     <td>
-                      <button
-                        className="table-action-button"
-                        onClick={() => navigate(`/alunos/${aluno.id}/desempenho`)}
-                      >
-                        Ver desempenho
-                      </button>
+                      {usuarioLogado?.tipo === "professor" && (
+                    <button
+                      className="table-action-button"
+                      onClick={() => navigate(`/alunos/${aluno.id}/desempenho`)}
+                    >
+                      Ver desempenho
+                    </button>
+  )}
+
+{usuarioLogado?.tipo === "aluno" &&
+  String(usuarioLogado.id) === String(aluno.id) && (
+    <button
+      className="table-action-button"
+      onClick={() => navigate(`/alunos/${aluno.id}/desempenho`)}
+    >
+      Meu desempenho
+    </button>
+  )}
+
+{usuarioLogado?.tipo === "aluno" &&
+  String(usuarioLogado.id) !== String(aluno.id) && (
+    <span className="restricted-label">Restrito</span>
+  )}
                     </td>
                   </tr>
                 ))}

@@ -5,13 +5,14 @@ import Header from "../components/Header";
 function JogoModo1() {
   const navigate = useNavigate();
 
-  const perguntas = [
+  const perguntasPadrao = [
     {
       id: 1,
       enunciado: "Qual é o nome deste material de laboratório?",
       imagem: "/icons.svg",
       respostaCorreta: "Béquer",
       dica: "É usado para misturar, aquecer ou armazenar líquidos.",
+      pontuacao: 10,
       alternativas: ["Béquer", "Proveta", "Funil", "Pipeta"],
     },
     {
@@ -20,6 +21,7 @@ function JogoModo1() {
       imagem: "/icons.svg",
       respostaCorreta: "Proveta",
       dica: "Possui marcações laterais para medir volume.",
+      pontuacao: 10,
       alternativas: ["Béquer", "Proveta", "Cápsula", "Condensador"],
     },
     {
@@ -28,9 +30,27 @@ function JogoModo1() {
       imagem: "/icons.svg",
       respostaCorreta: "Funil",
       dica: "É usado junto com papel filtro.",
+      pontuacao: 10,
       alternativas: ["Bico de Bunsen", "Funil", "Almofariz", "Tela de amianto"],
     },
   ];
+
+  const perguntasCadastradas =
+    JSON.parse(localStorage.getItem("perguntasSistema")) || [];
+
+  const perguntasDoProfessor = perguntasCadastradas
+    .filter((pergunta) => String(pergunta.modo) === "1")
+    .map((pergunta) => ({
+      id: pergunta.id,
+      enunciado: pergunta.enunciado,
+      imagem: pergunta.imagem || "/icons.svg",
+      respostaCorreta: pergunta.respostaCorreta,
+      dica: pergunta.dica || "Sem dica cadastrada.",
+      pontuacao: pergunta.pontuacao || 10,
+      alternativas: pergunta.alternativas.map((alternativa) => alternativa.texto),
+    }));
+
+  const perguntas = [...perguntasPadrao, ...perguntasDoProfessor];
 
   const [indiceAtual, setIndiceAtual] = useState(0);
   const [pontuacao, setPontuacao] = useState(0);
@@ -48,7 +68,7 @@ function JogoModo1() {
     const acertou = alternativa === perguntaAtual.respostaCorreta;
 
     if (acertou) {
-      setPontuacao((valor) => valor + 10);
+      setPontuacao((valor) => valor + perguntaAtual.pontuacao);
       setAcertos((valor) => valor + 1);
       setMensagem("Resposta correta! ✅");
     } else {
@@ -96,6 +116,30 @@ function JogoModo1() {
     } else {
       salvarDesempenhoENavegar();
     }
+  }
+
+  if (perguntas.length === 0) {
+    return (
+      <>
+        <Header />
+
+        <main className="jogo-page">
+          <section className="jogo-container">
+            <div className="empty-performance">
+              <h2>Nenhuma pergunta disponível</h2>
+              <p>Peça ao professor para cadastrar perguntas neste modo.</p>
+
+              <button
+                className="primary-action-button"
+                onClick={() => navigate("/aluno")}
+              >
+                Voltar ao menu
+              </button>
+            </div>
+          </section>
+        </main>
+      </>
+    );
   }
 
   return (

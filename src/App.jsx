@@ -12,7 +12,7 @@ import Desempenho from "./pages/Desempenho";
 import GerenciarAlunos from "./pages/GerenciarAlunos";
 import AdicionarAluno from "./pages/AdicionarAluno";
 import DesempenhoAluno from "./pages/DesempenhoAluno";
-
+import NotFound from "./pages/NotFound";
 import "./App.css";
 
 function AnimatedRoutes() {
@@ -35,6 +35,7 @@ function AnimatedRoutes() {
         <Route path="/adicionar-pergunta/:modo" element={<AdicionarPergunta />} />
         <Route path="/alunos/:id/desempenho" element={<DesempenhoAluno />} />
         <Route path="/editar-pergunta/:id" element={<AdicionarPergunta />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
