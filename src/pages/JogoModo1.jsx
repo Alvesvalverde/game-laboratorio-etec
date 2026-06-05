@@ -59,6 +59,34 @@ function JogoModo1() {
     setBloqueado(true);
   }
 
+  function salvarDesempenhoENavegar() {
+    const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+    const resultado = {
+      id: Date.now(),
+      alunoId: usuarioLogado?.id || 2,
+      alunoNome: usuarioLogado?.nome || "Aluno Teste",
+      modo: "Modo 1 - Fácil",
+      pontuacao,
+      acertos,
+      erros,
+      totalPerguntas: perguntas.length,
+      data: new Date().toLocaleString("pt-BR"),
+    };
+
+    const historicoAtual =
+      JSON.parse(localStorage.getItem("historicoDesempenho")) || [];
+
+    localStorage.setItem(
+      "historicoDesempenho",
+      JSON.stringify([...historicoAtual, resultado])
+    );
+
+    navigate("/desempenho", {
+      state: resultado,
+    });
+  }
+
   function proximaPergunta() {
     if (indiceAtual < perguntas.length - 1) {
       setIndiceAtual((valor) => valor + 1);
@@ -66,15 +94,7 @@ function JogoModo1() {
       setDicaVisivel(false);
       setBloqueado(false);
     } else {
-      navigate("/desempenho", {
-        state: {
-          modo: "Modo 1 - Fácil",
-          pontuacao,
-          acertos,
-          erros,
-          totalPerguntas: perguntas.length,
-        },
-      });
+      salvarDesempenhoENavegar();
     }
   }
 
@@ -149,7 +169,13 @@ function JogoModo1() {
             </div>
 
             {mensagem && (
-              <div className={mensagem.includes("correta") ? "feedback success" : "feedback error"}>
+              <div
+                className={
+                  mensagem.includes("correta")
+                    ? "feedback success"
+                    : "feedback error"
+                }
+              >
                 {mensagem}
               </div>
             )}
@@ -164,7 +190,9 @@ function JogoModo1() {
                 onClick={proximaPergunta}
                 disabled={!bloqueado}
               >
-                {indiceAtual < perguntas.length - 1 ? "Próxima pergunta" : "Finalizar"}
+                {indiceAtual < perguntas.length - 1
+                  ? "Próxima pergunta"
+                  : "Finalizar"}
               </button>
             </div>
           </section>

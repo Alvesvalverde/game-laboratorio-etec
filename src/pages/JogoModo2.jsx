@@ -92,6 +92,34 @@ function JogoModo2() {
     setBloqueado(true);
   }
 
+  function salvarDesempenhoENavegar() {
+    const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+    const resultado = {
+      id: Date.now(),
+      alunoId: usuarioLogado?.id || 2,
+      alunoNome: usuarioLogado?.nome || "Aluno Teste",
+      modo: "Modo 2 - Médio",
+      pontuacao,
+      acertos,
+      erros,
+      totalPerguntas: desafios.length,
+      data: new Date().toLocaleString("pt-BR"),
+    };
+
+    const historicoAtual =
+      JSON.parse(localStorage.getItem("historicoDesempenho")) || [];
+
+    localStorage.setItem(
+      "historicoDesempenho",
+      JSON.stringify([...historicoAtual, resultado])
+    );
+
+    navigate("/desempenho", {
+      state: resultado,
+    });
+  }
+
   function proximoDesafio() {
     if (indiceAtual < desafios.length - 1) {
       setIndiceAtual((valor) => valor + 1);
@@ -99,15 +127,7 @@ function JogoModo2() {
       setDicaVisivel(false);
       setBloqueado(false);
     } else {
-      navigate("/desempenho", {
-        state: {
-          modo: "Modo 2 - Médio",
-          pontuacao,
-          acertos,
-          erros,
-          totalPerguntas: desafios.length,
-        },
-      });
+      salvarDesempenhoENavegar();
     }
   }
 
@@ -186,7 +206,13 @@ function JogoModo2() {
             </div>
 
             {mensagem && (
-              <div className={mensagem.includes("correta") ? "feedback success" : "feedback error"}>
+              <div
+                className={
+                  mensagem.includes("correta")
+                    ? "feedback success"
+                    : "feedback error"
+                }
+              >
                 {mensagem}
               </div>
             )}
@@ -201,7 +227,9 @@ function JogoModo2() {
                 onClick={proximoDesafio}
                 disabled={!bloqueado}
               >
-                {indiceAtual < desafios.length - 1 ? "Próximo desafio" : "Finalizar"}
+                {indiceAtual < desafios.length - 1
+                  ? "Próximo desafio"
+                  : "Finalizar"}
               </button>
             </div>
           </section>

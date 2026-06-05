@@ -1676,3 +1676,224 @@ body {
     grid-template-columns: 1fr;
   }
 }
+/* ============================= */
+/* MENU DE SAIR NO HEADER */
+/* ============================= */
+
+.menu-wrapper {
+  position: relative;
+  margin-right: 25px;
+}
+
+.menu-wrapper .menu-button {
+  margin-right: 0;
+}
+
+.logout-menu {
+  position: absolute;
+  top: 54px;
+  right: 0;
+  width: 150px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.logout-menu button {
+  width: 100%;
+  border: none;
+  background-color: #ffffff;
+  color: #333;
+  padding: 15px 18px;
+  text-align: left;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.logout-menu button:hover {
+  background-color: #f2f2f2;
+  color: #b22222;
+  font-weight: bold;
+}
+/* ============================= */
+/* TRANSIÇÃO ENTRE TELAS */
+/* ============================= */
+
+.page-transition {
+  animation: fadeSlideIn 0.28s ease;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* ============================= */
+/* HISTÓRICO DE DESEMPENHO */
+/* ============================= */
+
+.empty-performance {
+  background-color: #ffffff;
+  border-radius: 22px;
+  padding: 36px;
+  text-align: center;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+}
+
+.empty-performance h2 {
+  margin: 0 0 12px;
+  color: #1f1f1f;
+}
+
+.empty-performance p {
+  color: #555;
+  margin-bottom: 24px;
+}
+
+.historico-card {
+  background-color: #ffffff;
+  border-radius: 22px;
+  padding: 26px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+}
+
+.historico-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.historico-title-row h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #1f1f1f;
+  border-left: 7px solid #b22222;
+  padding-left: 14px;
+}
+
+.historico-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.historico-table th,
+.historico-table td {
+  padding: 15px 14px;
+  text-align: left;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.historico-table th {
+  background-color: #b22222;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.historico-table tr:hover {
+  background-color: #f5f5f5;
+}
+
+@media (max-width: 900px) {
+  .historico-card {
+    overflow-x: auto;
+  }
+
+  .historico-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .historico-table {
+    min-width: 760px;
+  }
+}
+/* ============================= */
+/* ADICIONAR ALUNO */
+/* ============================= */
+
+.adicionar-aluno-page {
+  min-height: calc(100vh - 90px);
+  background-color: #d9d9d9;
+  padding: 55px 70px;
+}
+
+.adicionar-aluno-container {
+  max-width: 1180px;
+  margin: auto;
+}
+
+.aluno-form-card {
+  background-color: #ffffff;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+}
+
+.form-note {
+  background-color: #fff5f5;
+  border-left: 6px solid #b22222;
+  border-radius: 12px;
+  padding: 18px;
+  color: #333;
+  line-height: 1.5;
+  margin: 0;
+}
+
+@media (max-width: 800px) {
+  .adicionar-aluno-page {
+    padding: 35px 20px;
+  }
+}
+/* ============================= */
+/* DESEMPENHO INDIVIDUAL DO ALUNO */
+/* ============================= */
+
+.student-profile-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  margin-bottom: 30px;
+}
+
+.student-profile-summary div {
+  background-color: #ffffff;
+  border-radius: 18px;
+  padding: 22px;
+  border-top: 7px solid #b22222;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+}
+
+.student-profile-summary span {
+  display: block;
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.student-profile-summary strong {
+  color: #b22222;
+  font-size: 18px;
+}
+
+@media (max-width: 1000px) {
+  .student-profile-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+  .student-profile-summary {
+    grid-template-columns: 1fr;
+  }
+}

@@ -7,52 +7,90 @@ function GerenciarAlunos() {
 
   const [busca, setBusca] = useState("");
 
-  const alunos = [
-    {
-      id: 1,
-      nome: "Aluno A",
-      email: "alunoa@etec.com",
-      turma: "1º Química A",
-      pontos: 120,
-      status: "Ativo",
-    },
-    {
-      id: 2,
-      nome: "Aluno B",
-      email: "alunob@etec.com",
-      turma: "1º Química A",
-      pontos: 90,
-      status: "Ativo",
-    },
-    {
-      id: 3,
-      nome: "Aluno C",
-      email: "alunoc@etec.com",
-      turma: "1º Química A",
-      pontos: 70,
-      status: "Ativo",
-    },
-    {
-      id: 4,
-      nome: "Aluno D",
-      email: "alunod@etec.com",
-      turma: "1º Química A",
-      pontos: 50,
-      status: "Ativo",
-    },
-    {
-      id: 5,
-      nome: "Aluno E",
-      email: "alunoe@etec.com",
-      turma: "1º Química A",
-      pontos: 30,
-      status: "Ativo",
-    },
-  ];
+  const alunosPadrao = [
+  {
+    id: 1,
+    nome: "Aluno A",
+    email: "alunoa@etec.com",
+    turma: "1º Química A",
+    pontos: 120,
+    status: "Ativo",
+  },
+  {
+    id: 2,
+    nome: "Aluno B",
+    email: "alunob@etec.com",
+    turma: "1º Química A",
+    pontos: 90,
+    status: "Ativo",
+  },
+  {
+    id: 3,
+    nome: "Aluno C",
+    email: "alunoc@etec.com",
+    turma: "1º Química A",
+    pontos: 70,
+    status: "Ativo",
+  },
+  {
+    id: 4,
+    nome: "Aluno D",
+    email: "alunod@etec.com",
+    turma: "1º Química A",
+    pontos: 50,
+    status: "Ativo",
+  },
+  {
+    id: 5,
+    nome: "Aluno E",
+    email: "alunoe@etec.com",
+    turma: "1º Química A",
+    pontos: 30,
+    status: "Ativo",
+  },
+];
+
+const alunosCadastrados =
+  JSON.parse(localStorage.getItem("alunosSistema")) || [];
+
+const alunos = [...alunosPadrao, ...alunosCadastrados];
 
   const alunosFiltrados = alunos.filter((aluno) =>
     aluno.nome.toLowerCase().includes(busca.toLowerCase())
   );
+
+  function removerAluno(idAluno) {
+  const confirmar = window.confirm("Tem certeza que deseja remover este aluno?");
+
+  if (!confirmar) return;
+
+  const alunosCadastrados =
+    JSON.parse(localStorage.getItem("alunosSistema")) || [];
+
+  const alunoEhPadrao = idAluno >= 1 && idAluno <= 5;
+
+  if (alunoEhPadrao) {
+    alert("Os alunos padrão não podem ser removidos nesta versão de teste.");
+    return;
+  }
+
+  const novaLista = alunosCadastrados.filter(
+    (aluno) => String(aluno.id) !== String(idAluno)
+  );
+
+  localStorage.setItem("alunosSistema", JSON.stringify(novaLista));
+
+  const historicoCompleto =
+    JSON.parse(localStorage.getItem("historicoDesempenho")) || [];
+
+  const novoHistorico = historicoCompleto.filter(
+    (item) => String(item.alunoId) !== String(idAluno)
+  );
+
+  localStorage.setItem("historicoDesempenho", JSON.stringify(novoHistorico));
+
+  window.location.reload();
+}
 
   return (
     <>
@@ -71,8 +109,11 @@ function GerenciarAlunos() {
                 Voltar
               </button>
 
-              <button className="primary-action-button">
-                + Adicionar Aluno
+              <button
+                className="primary-action-button"
+                onClick={() => navigate("/adicionar-aluno")}
+              >
+              + Adicionar Aluno
               </button>
             </div>
           </div>
@@ -129,8 +170,19 @@ function GerenciarAlunos() {
                       <span className="status-badge">{aluno.status}</span>
                     </td>
                     <td>
-                      <button className="table-action-button">Ver</button>
-                      <button className="table-action-button danger">Remover</button>
+                      <button
+                        className="table-action-button"
+                        onClick={() => navigate(`/alunos/${aluno.id}/desempenho`)}
+                        >
+                        Ver
+                        </button>
+
+                      <button
+                        className="table-action-button danger"
+                        onClick={() => removerAluno(aluno.id)}
+                      >
+                        Remover
+                      </button>
                     </td>
                   </tr>
                 ))}

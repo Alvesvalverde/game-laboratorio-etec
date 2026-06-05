@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import toast, { Toaster } from 'react-hot-toast'; // Importando a biblioteca
+import toast, { Toaster } from "react-hot-toast";
 
 function Login() {
   const [modo, setModo] = useState("login");
@@ -16,11 +16,32 @@ function Login() {
         .toLowerCase();
 
       if (emailDigitado.includes("aluno")) {
+        localStorage.setItem(
+          "usuarioLogado",
+          JSON.stringify({
+            id: 2,
+            nome: "Aluno Teste",
+            email: emailDigitado,
+            tipo: "aluno",
+            turma: "1º Química A",
+          })
+        );
+
         toast.success("Login de aluno realizado com sucesso!");
-        setTimeout(() => navigate("/aluno"), 1000);
+        setTimeout(() => navigate("/aluno"), 800);
       } else if (emailDigitado.includes("professor")) {
+        localStorage.setItem(
+          "usuarioLogado",
+          JSON.stringify({
+            id: 1,
+            nome: "Professor Teste",
+            email: emailDigitado,
+            tipo: "professor",
+          })
+        );
+
         toast.success("Login de professor realizado com sucesso!");
-        setTimeout(() => navigate("/professor"), 1000);
+        setTimeout(() => navigate("/professor"), 800);
       } else {
         toast.error("Use aluno@etec.com ou professor@etec.com para testar.");
       }
@@ -32,7 +53,6 @@ function Login() {
 
   return (
     <main className="login-page">
-      {/* O Toaster precisa estar aqui para exibir as notificações */}
       <Toaster position="top-right" />
 
       <section className="login-container">
@@ -71,7 +91,6 @@ function Login() {
               )}
 
               <input type="email" placeholder="EMAIL" required />
-
               <input type="password" placeholder="SENHA" required />
 
               <button type="submit" className="submit-button">
