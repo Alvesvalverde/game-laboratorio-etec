@@ -1,53 +1,46 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
 function Login() {
-  const [modo, setModo] = useState("login");
   const navigate = useNavigate();
 
   function enviarFormulario(event) {
     event.preventDefault();
 
-    if (modo === "login") {
-      const emailDigitado = event.target
-        .querySelector("input[type='email']")
-        .value
-        .toLowerCase();
+    const emailDigitado = event.target
+      .querySelector("input[type='email']")
+      .value
+      .toLowerCase();
 
-      if (emailDigitado.includes("aluno")) {
-        localStorage.setItem(
-          "usuarioLogado",
-          JSON.stringify({
-            id: 2,
-            nome: "Aluno Teste",
-            email: emailDigitado,
-            tipo: "aluno",
-            turma: "1º Química A",
-          })
-        );
+    if (emailDigitado.includes("aluno")) {
+      localStorage.setItem(
+        "usuarioLogado",
+        JSON.stringify({
+          id: 2,
+          nome: "Aluno Teste",
+          email: emailDigitado,
+          tipo: "aluno",
+          turma: "1º Química A",
+        })
+      );
 
-        toast.success("Login de aluno realizado com sucesso!");
-        setTimeout(() => navigate("/aluno"), 800);
-      } else if (emailDigitado.includes("professor")) {
-        localStorage.setItem(
-          "usuarioLogado",
-          JSON.stringify({
-            id: 1,
-            nome: "Professor Teste",
-            email: emailDigitado,
-            tipo: "professor",
-          })
-        );
+      toast.success("Login de aluno realizado com sucesso!");
+      setTimeout(() => navigate("/aluno"), 800);
+    } else if (emailDigitado.includes("professor")) {
+      localStorage.setItem(
+        "usuarioLogado",
+        JSON.stringify({
+          id: 1,
+          nome: "Professor Teste",
+          email: emailDigitado,
+          tipo: "professor",
+        })
+      );
 
-        toast.success("Login de professor realizado com sucesso!");
-        setTimeout(() => navigate("/professor"), 800);
-      } else {
-        toast.error("Use aluno@etec.com ou professor@etec.com para testar.");
-      }
+      toast.success("Login de professor realizado com sucesso!");
+      setTimeout(() => navigate("/professor"), 800);
     } else {
-      toast.success("Cadastro realizado com sucesso!");
-      setModo("login");
+      toast.error("Use aluno@etec.com ou professor@etec.com para testar.");
     }
   }
 
@@ -65,36 +58,20 @@ function Login() {
             <h2>Bem-vindo de volta!</h2>
             <p>Acesse sua conta</p>
 
-            <button
-              type="button"
-              className={modo === "login" ? "small-button active" : "small-button"}
-              onClick={() => setModo("login")}
-            >
+            <button type="button" className="small-button active">
               Entrar
-            </button>
-
-            <button
-              type="button"
-              className={modo === "cadastro" ? "small-button active" : "small-button"}
-              onClick={() => setModo("cadastro")}
-            >
-              Criar conta
             </button>
           </div>
 
           <div className="login-right">
-            <h3>{modo === "login" ? "Entrar" : "Criar sua conta"}</h3>
+            <h3>Entrar</h3>
 
             <form onSubmit={enviarFormulario}>
-              {modo === "cadastro" && (
-                <input type="text" placeholder="NOME" required />
-              )}
-
               <input type="email" placeholder="EMAIL" required />
               <input type="password" placeholder="SENHA" required />
 
               <button type="submit" className="submit-button">
-                {modo === "login" ? "ENTRAR" : "ENVIAR"}
+                ENTRAR
               </button>
             </form>
           </div>
