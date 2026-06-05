@@ -14,6 +14,7 @@ import AdicionarAluno from "./pages/AdicionarAluno";
 import DesempenhoAluno from "./pages/DesempenhoAluno";
 import NotFound from "./pages/NotFound";
 import "./App.css";
+import RecuperarSenha from "./pages/RecuperarSenha";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -36,6 +37,7 @@ function AnimatedRoutes() {
         <Route path="/alunos/:id/desempenho" element={<DesempenhoAluno />} />
         <Route path="/editar-pergunta/:id" element={<AdicionarPergunta />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/recuperar-senha" element={<RecuperarSenha />} />
       </Routes>
     </div>
   );

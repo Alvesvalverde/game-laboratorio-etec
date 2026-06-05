@@ -26,7 +26,10 @@ function Login() {
 
       toast.success("Login de aluno realizado com sucesso!");
       setTimeout(() => navigate("/aluno"), 800);
-    } else if (emailDigitado.includes("professor")) {
+      return;
+    }
+
+    if (emailDigitado.includes("professor")) {
       localStorage.setItem(
         "usuarioLogado",
         JSON.stringify({
@@ -39,9 +42,10 @@ function Login() {
 
       toast.success("Login de professor realizado com sucesso!");
       setTimeout(() => navigate("/professor"), 800);
-    } else {
-      toast.error("Use aluno@etec.com ou professor@etec.com para testar.");
+      return;
     }
+
+    toast.error("Use aluno@etec.com ou professor@etec.com para testar.");
   }
 
   return (
@@ -68,7 +72,16 @@ function Login() {
 
             <form onSubmit={enviarFormulario}>
               <input type="email" placeholder="EMAIL" required />
+
               <input type="password" placeholder="SENHA" required />
+
+              <button
+                type="button"
+                className="forgot-password-button"
+                onClick={() => navigate("/recuperar-senha")}
+              >
+                Esqueci minha senha
+              </button>
 
               <button type="submit" className="submit-button">
                 ENTRAR
