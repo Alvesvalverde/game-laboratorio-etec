@@ -1897,3 +1897,170 @@ body {
     grid-template-columns: 1fr;
   }
 }
+/* ============================= */
+/* MENU DO PROFESSOR - DASHBOARD PADRONIZADO */
+/* ============================= */
+
+.professor-dashboard-page {
+  min-height: calc(100vh - 90px);
+  background-color: #d9d9d9;
+  padding: 55px 70px;
+}
+
+.professor-hero {
+  max-width: 1180px;
+  margin: 0 auto 45px;
+  background: linear-gradient(135deg, #b22222, #d62828);
+  color: #ffffff;
+  border-radius: 24px;
+  padding: 38px 45px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 35px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+}
+
+.professor-subtitle {
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.professor-hero h1 {
+  margin: 0 0 12px;
+  font-size: 34px;
+}
+
+.professor-hero p {
+  margin: 0;
+  max-width: 650px;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+.professor-profile-card {
+  min-width: 210px;
+  background-color: #ffffff;
+  color: #1f1f1f;
+  border-radius: 18px;
+  padding: 22px;
+  text-align: center;
+}
+
+.professor-profile-card .avatar {
+  margin-bottom: 12px;
+}
+
+.professor-profile-card strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.professor-profile-card span {
+  color: #555;
+  font-size: 14px;
+}
+
+.professor-actions {
+  max-width: 1180px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.professor-action-card {
+  min-height: 245px;
+  border: none;
+  border-radius: 22px;
+  padding: 28px 24px;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+  transition: 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.professor-action-card:hover {
+  transform: translateY(-6px);
+}
+
+.professor-action-card h2 {
+  margin: 14px 0 8px;
+  font-size: 24px;
+}
+
+.professor-action-card p {
+  margin: 0;
+  line-height: 1.4;
+  font-size: 15px;
+}
+
+.professor-card-icon {
+  font-size: 38px;
+}
+
+.professor-action-card strong {
+  margin-top: 18px;
+  display: inline-block;
+  width: fit-content;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+.red-card {
+  background-color: #b22222;
+  color: #ffffff;
+}
+
+.red-card strong {
+  background-color: #ffffff;
+  color: #b22222;
+}
+
+.white-card {
+  background-color: #ffffff;
+  color: #1f1f1f;
+  border-top: 8px solid #b22222;
+}
+
+.white-card strong {
+  background-color: #b22222;
+  color: #ffffff;
+}
+
+/* Responsivo menu professor */
+@media (max-width: 1100px) {
+  .professor-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .professor-hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .professor-profile-card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .professor-dashboard-page {
+    padding: 35px 20px;
+  }
+
+  .professor-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .professor-hero h1 {
+    font-size: 26px;
+  }
+}

@@ -5,31 +5,87 @@ function ListaPerguntas() {
   const navigate = useNavigate();
   const { modo } = useParams();
 
-  const modoFormatado = modo === "2" ? "Modo 2 - Médio" : "Modo 1 - Fácil";
+  const modoAtual = modo === "2" ? "2" : "1";
+  const modoFormatado = modoAtual === "2" ? "Modo 2 - Médio" : "Modo 1 - Fácil";
 
-  const perguntas = [
+  const perguntasPadrao = [
     {
       id: 1,
-      titulo: "Qual é o nome deste material?",
-      resposta: "Béquer",
-      dificuldade: modo === "2" ? "Médio" : "Fácil",
+      modo: "1",
+      enunciado: "Qual é o nome deste material?",
+      respostaCorreta: "Béquer",
+      dificuldade: "Fácil",
       status: "Ativa",
+      origem: "Padrão",
     },
     {
       id: 2,
-      titulo: "Qual material é usado para medir volume?",
-      resposta: "Proveta",
-      dificuldade: modo === "2" ? "Médio" : "Fácil",
+      modo: "1",
+      enunciado: "Qual material é usado para medir volume?",
+      respostaCorreta: "Proveta",
+      dificuldade: "Fácil",
       status: "Ativa",
+      origem: "Padrão",
     },
     {
       id: 3,
-      titulo: "Qual material está associado à filtração?",
-      resposta: "Funil",
-      dificuldade: modo === "2" ? "Médio" : "Fácil",
+      modo: "1",
+      enunciado: "Qual material está associado à filtração?",
+      respostaCorreta: "Funil",
+      dificuldade: "Fácil",
       status: "Ativa",
+      origem: "Padrão",
+    },
+    {
+      id: 4,
+      modo: "2",
+      enunciado: "Qual material está associado ao processo de filtração simples?",
+      respostaCorreta: "Funil",
+      dificuldade: "Médio",
+      status: "Ativa",
+      origem: "Padrão",
+    },
+    {
+      id: 5,
+      modo: "2",
+      enunciado: "Qual material é utilizado para condensar vapores?",
+      respostaCorreta: "Condensador",
+      dificuldade: "Médio",
+      status: "Ativa",
+      origem: "Padrão",
     },
   ];
+
+  const perguntasCadastradas =
+    JSON.parse(localStorage.getItem("perguntasSistema")) || [];
+
+  const perguntas = [...perguntasPadrao, ...perguntasCadastradas].filter(
+    (pergunta) => String(pergunta.modo) === String(modoAtual)
+  );
+
+  function excluirPergunta(idPergunta, origem) {
+    if (origem === "Padrão") {
+      alert("As perguntas padrão não podem ser excluídas nesta versão de teste.");
+      return;
+    }
+
+    const confirmar = window.confirm(
+      "Tem certeza que deseja excluir esta pergunta?"
+    );
+
+    if (!confirmar) return;
+
+    const perguntasSalvas =
+      JSON.parse(localStorage.getItem("perguntasSistema")) || [];
+
+    const novaLista = perguntasSalvas.filter(
+      (pergunta) => String(pergunta.id) !== String(idPergunta)
+    );
+
+    localStorage.setItem("perguntasSistema", JSON.stringify(novaLista));
+
+    window.location.reload();
+  }
 
   return (
     <>
@@ -50,7 +106,7 @@ function ListaPerguntas() {
 
               <button
                 className="primary-action-button"
-                onClick={() => navigate(`/adicionar-pergunta/${modo}`)}
+                onClick={() => navigate(`/adicionar-pergunta/${modoAtual}`)}
               >
                 + Nova Pergunta
               </button>
@@ -82,6 +138,7 @@ function ListaPerguntas() {
                   <th>Pergunta</th>
                   <th>Resposta correta</th>
                   <th>Dificuldade</th>
+                  <th>Origem</th>
                   <th>Status</th>
                   <th>Ações</th>
                 </tr>
@@ -91,20 +148,36 @@ function ListaPerguntas() {
                 {perguntas.map((pergunta) => (
                   <tr key={pergunta.id}>
                     <td>#{pergunta.id}</td>
-                    <td>{pergunta.titulo}</td>
-                    <td>{pergunta.resposta}</td>
-                    <td>{pergunta.dificuldade}</td>
+                    <td>{pergunta.enunciado}</td>
+                    <td>{pergunta.respostaCorreta}</td>
+                    <td>
+                      {pergunta.dificuldade ||
+                        (pergunta.modo === "2" ? "Médio" : "Fácil")}
+                    </td>
+                    <td>{pergunta.origem || "Professor"}</td>
                     <td>
                       <span className="status-badge">{pergunta.status}</span>
                     </td>
                     <td>
                       <button className="table-action-button">Editar</button>
-                      <button className="table-action-button danger">Excluir</button>
+
+                      <button
+                        className="table-action-button danger"
+                        onClick={() =>
+                          excluirPergunta(pergunta.id, pergunta.origem)
+                        }
+                      >
+                        Excluir
+                      </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+
+            {perguntas.length === 0 && (
+              <p className="empty-message">Nenhuma pergunta cadastrada.</p>
+            )}
           </section>
         </section>
       </main>
